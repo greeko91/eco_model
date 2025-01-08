@@ -1,21 +1,14 @@
-import pandas as pd
-#import netCDF4
-import nctoolkit as nc
-from multiprocessing import freeze_support, Process
-
-
-def worker():
-    nc_name = 'dutch_harbor_1_mhw_2006.nc'
-    ds = nc.open_data(nc_name)
-    print(ds)
-    df = ds.to_dataframe()
-    print(df)
+import netCDF4 as nc
     
+nc_name = 'dutch_harbor_1_mhw_2006.nc'
+ds = nc.Dataset(nc_name, 'r')
 
+print(ds.variables)
 
-if __name__ == "__main__":
-    freeze_support()
-    p = Process(target=worker)
-    p.start()
-    p.join()
+# Долгота shape = (3060, )
+lat = ds.variables['lat'][:]
+# Ширина shape = (4680, )
+lon = ds.variables['lon'][:]
+# Размер волны в точке на Земле shape = (3060, 4680)
+Band1 = ds.variables['Band1'][:]
 
